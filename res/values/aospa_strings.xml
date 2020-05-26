@@ -22,4 +22,8 @@
     <!-- Display settings screen, increased touch polling rate settings summary -->
     <string name="touch_polling_summary">Increase touchscreen polling rate to decrease touch latency</string>
 
+    <!-- Black theme for dark mode -->
+    <string name="berry_black_theme_title">Pure black</string>
+    <string name="berry_black_theme_purpose" translatable="false">Whether the pure dark theme is enabled</string>
+    <string name="berry_black_theme_summary">Pure black background for dark theme</string>
 </resources>
