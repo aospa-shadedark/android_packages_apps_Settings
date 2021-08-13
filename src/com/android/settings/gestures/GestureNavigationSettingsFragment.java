@@ -17,11 +17,13 @@
 package com.android.settings.gestures;
 
 import android.app.settings.SettingsEnums;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.os.UserHandle;
 import android.provider.Settings;
 import android.view.Display;
 import android.view.WindowManager;
@@ -56,6 +58,8 @@ public class GestureNavigationSettingsFragment extends DashboardFragment {
             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             .putExtra("use_tutorial_menu", true);
 
+    private static final String GESTURE_NAVBAR_LENGTH_KEY = "gesture_navbar_length_preference";
+
     private WindowManager mWindowManager;
     private BackGestureIndicatorView mIndicatorView;
 
@@ -87,6 +91,7 @@ public class GestureNavigationSettingsFragment extends DashboardFragment {
         initSliderPreference(LEFT_EDGE_SEEKBAR_KEY);
         initSliderPreference(RIGHT_EDGE_SEEKBAR_KEY);
         initTutorialButton();
+        initGestureNavbarLengthPreference();
     }
 
     @Override
@@ -176,6 +181,25 @@ public class GestureNavigationSettingsFragment extends DashboardFragment {
             final float scale = mBackGestureInsetScales[(int) v];
             Settings.Secure.putFloat(getContext().getContentResolver(), settingsKey, scale);
             pref.setSliderStateDescription(formatStateDescription(pref, (int) v));
+            return true;
+        });
+    }
+
+    private void initGestureNavbarLengthPreference() {
+        final ContentResolver resolver = getContext().getContentResolver();
+        final SliderPreference pref =
+            getPreferenceScreen().findPreference(GESTURE_NAVBAR_LENGTH_KEY);
+        if (pref == null) return;
+        pref.setUpdatesContinuously(true);
+        pref.setHapticFeedbackMode(SliderPreference.HAPTIC_FEEDBACK_MODE_ON_TICKS);
+        pref.setSliderIncrement(1);
+        pref.setTickVisible(true);
+        pref.setValue(Settings.System.getIntForUser(
+            resolver, Settings.System.GESTURE_NAVBAR_LENGTH_MODE,
+            1, UserHandle.USER_CURRENT));
+        pref.setOnPreferenceChangeListener((p, v) -> {
+            Settings.System.putIntForUser(resolver, Settings.System.GESTURE_NAVBAR_LENGTH_MODE,
+                (Integer) v, UserHandle.USER_CURRENT);
             return true;
         });
     }
