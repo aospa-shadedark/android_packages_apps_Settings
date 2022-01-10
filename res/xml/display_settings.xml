@@ -45,6 +45,15 @@
             android:title="@string/even_dimmer_display_title"
             android:summary="@string/even_dimmer_display_summary"
             settings:controller="com.android.settings.display.EvenDimmerPreferenceController"/>
+
+        <com.android.settingslib.PrimarySwitchPreference
+            android:fragment="com.android.settings.accessibility.ToggleReduceBrightColorsPreferenceFragment"
+            android:key="reduce_bright_colors_preference"
+            android:persistent="false"
+            android:title="@string/reduce_bright_colors_preference_title"
+            settings:keywords="@string/keywords_reduce_bright_colors"
+            settings:controller="com.android.settings.accessibility.ReduceBrightColorsPreferenceController"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory
