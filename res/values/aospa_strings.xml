@@ -9,4 +9,8 @@
     <string name="miscellaneous_pairip_activity_block_title">Block PairIP license verification</string>
     <string name="miscellaneous_pairip_activity_block_summary">Prevent Play Store apps from launching the \"Get this app from Play\" screen when not installed by the Play Store</string>
 
+    <!-- Ignore window secure -->
+    <string name="ignore_window_secure_title">Ignore secure window flags</string>
+    <string name="ignore_window_secure_summary">Remove screenshot and screenrecord restrictions for all apps. This can be convenient in some cases but may lead to privacy leaks.</string>
+
 </resources>
