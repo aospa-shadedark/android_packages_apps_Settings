@@ -33,6 +33,19 @@
         settings:userRestriction="no_config_brightness"
         settings:controller="com.android.settings.display.AutoBrightnessDetailPreferenceController"/>
 
+    <co.aospa.framework.preference.CustomGlobalSeekBarPreference
+        android:key="user_min_auto_brightness"
+        android:title="@string/user_min_auto_brightness_title"
+        android:summary="@string/user_min_auto_brightness_summary"
+        android:defaultValue="0"
+        android:max="100"
+        settings:min="0"
+        settings:interval="5"
+        settings:units="%"
+        settings:showButtons="false"
+        settings:userRestriction="no_config_brightness"
+        settings:controller="com.android.settings.display.MinAutoBrightnessPreferenceController" />
+
     <com.android.settingslib.widget.FooterPreference
         android:key="auto_brightness_footer"
         android:title="@string/auto_brightness_description"

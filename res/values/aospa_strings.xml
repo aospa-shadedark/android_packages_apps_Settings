@@ -14,6 +14,10 @@
     <string name="qs_brightness_position_summary">Show the brightness slider at the bottom of the panel</string>
     <string name="qs_brightness_slider_round_title">Rounded brightness slider</string>
 
+    <!-- Minimum auto brightness -->
+    <string name="user_min_auto_brightness_title">Minimum auto brightness level</string>
+    <string name="user_min_auto_brightness_summary">Limits the lowest brightness level for auto brightness</string>
+
     <!-- Miscellaneous -->
     <string name="miscellaneous_pairip_activity_block_title">Block PairIP license verification</string>
     <string name="miscellaneous_pairip_activity_block_summary">Prevent Play Store apps from launching the \"Get this app from Play\" screen when not installed by the Play Store</string>
