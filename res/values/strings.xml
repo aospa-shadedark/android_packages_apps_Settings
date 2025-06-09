@@ -13819,4 +13819,15 @@
     <string name="show_ime_space_title">Show IME button space</string>
     <string name="show_ime_space_summary">Enable the input method quick switch feature to switch input methods or hide the on-screen keyboard from the feature bar at the bottom of the screen when typing</string>
 
+    <!-- Hide applist -->
+    <string name="search">Search</string>
+    <string name="search_apps">Search apps</string>
+    <string name="hide_applist_title">Hide apps</string>
+    <string name="hide_applist_summary">{count, plural,
+      =1      {# app hidden}
+      other   {# apps hidden}
+    }</string>
+    <string name="menu_show_overlay">Show overlay</string>
+    <string name="menu_hide_overlay">Hide overlay</string>
+
 </resources>
