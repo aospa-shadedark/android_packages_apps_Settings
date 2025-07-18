@@ -13810,4 +13810,8 @@
 
     <!-- url for learning more about bluetooth audio sharing -->
     <string name="help_url_audio_sharing" translatable="false"></string>
+
+    <!-- Compact Headsup -->
+    <string name="notification_heads_up_compact_title">Compact Heads Up notifications</string>
+    <string name="notification_heads_up_compact_summary">Show brief pop up notifications</string>    
 </resources>
