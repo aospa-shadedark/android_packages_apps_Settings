@@ -5,6 +5,14 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
+    <!-- QS brightness slider -->
+    <string name="qs_show_brightness_title">Brightness slider</string>
+    <string name="qs_show_brightness_hide">Hide</string>
+    <string name="qs_show_brightness_normal">Quick Settings</string>
+    <string name="qs_show_brightness_both">Quick Settings and Quick QS</string>
+    <string name="qs_brightness_position_title">Move to bottom</string>
+    <string name="qs_brightness_position_summary">Show the brightness slider at the bottom of the panel</string>
+
     <!-- Miscellaneous -->
     <string name="miscellaneous_pairip_activity_block_title">Block PairIP license verification</string>
     <string name="miscellaneous_pairip_activity_block_summary">Prevent Play Store apps from launching the \"Get this app from Play\" screen when not installed by the Play Store</string>
