@@ -74,6 +74,14 @@
             settings:controller="com.android.settings.input.gamecontroller.GameControllerSettingsController" />
 
         <Preference
+            android:key="game_device_identity_settings"
+            android:title="@string/game_device_identity_settings_title"
+            android:summary="@string/game_device_identity_settings_summary"
+            android:icon="@drawable/ic_default_controller"
+            settings:keywords="@string/game_device_identity_settings_keywords"
+            android:fragment="com.android.settings.gaming.GameDeviceIdentitySettings" />
+
+        <Preference
             android:key="gesture_settings"
             android:title="@string/gesture_preference_title"
             android:icon="@drawable/ic_settings_gestures"

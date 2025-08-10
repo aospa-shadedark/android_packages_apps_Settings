@@ -5277,6 +5277,45 @@
 
     <!-- Title for the button to trigger the 'Game Controller settings' page if only connected with a game controller. [CHAR LIMIT=35] -->
     <string name="game_controller_settings_title">Game Controller</string>
+    <string name="game_device_identity_settings_title">Per-game spoofing</string>
+    <string name="game_device_identity_settings_summary">Choose a device profile for each game</string>
+    <string name="game_device_identity_settings_keywords">game spoof, per-game spoofing, device model, game profile</string>
+    <string name="game_device_identity_enable_title">Enable per-game spoofing</string>
+    <string name="game_device_identity_enable_summary">Off by default. Selected profiles apply only while this switch is on.</string>
+    <string name="game_device_identity_intro_title">Spoof device identity per game</string>
+    <string name="game_device_identity_intro_summary">Profiles can change the Android brand, manufacturer, model, device, product and build fingerprint fields shown to a selected game. The master switch is off by default. Force-stop and reopen a game after changing its profile or this switch. Hardware, device attestation and Play Integrity are not changed.</string>
+    <string name="game_device_identity_games_title">Installed games</string>
+    <string name="game_device_identity_no_games">No installed games found</string>
+    <string name="game_device_identity_profile_off">Off</string>
+    <string name="game_device_identity_save_error">Could not save the game profile</string>
+    <string name="game_device_identity_import_title">Import game profiles</string>
+    <string name="game_device_identity_import_summary">Load package groups and device properties from a JSON profile file</string>
+    <string name="game_device_identity_import_error">Could not import the game profile JSON file</string>
+    <string name="game_device_identity_custom_profile">Imported profile · %1$s</string>
+    <string name="game_device_identity_custom_profile_fallback">Custom device</string>
+    <plurals name="game_device_identity_import_success">
+        <item quantity="one">Imported %1$d game profile. Force-stop and reopen a game to apply it.</item>
+        <item quantity="other">Imported %1$d game profiles. Force-stop and reopen a game to apply one.</item>
+    </plurals>
+    <string-array name="game_device_identity_profile_entries">
+        <item>Off</item>
+        <item>Google Pixel 6 Pro</item>
+        <item>Google Pixel 7 Pro</item>
+        <item>Google Pixel 8 Pro</item>
+        <item>Google Pixel 9 Pro</item>
+    </string-array>
+    <string-array name="game_device_identity_profile_values">
+        <item>pixel_6_pro</item>
+        <item>pixel_7_pro</item>
+        <item>pixel_8_pro</item>
+        <item>pixel_9_pro</item>
+    </string-array>
+    <string-array name="game_device_identity_profile_names">
+        <item>Google Pixel 6 Pro</item>
+        <item>Google Pixel 7 Pro</item>
+        <item>Google Pixel 8 Pro</item>
+        <item>Google Pixel 9 Pro</item>
+    </string-array>
     <!-- Introduction for game controller remapping page. [CHAR LIMIT=NONE] -->
     <string name="game_controller_remapping_settings_intro">Customize the actions triggered by your controller\u2019s buttons</string>
     <!-- Title for the preference category for key remapping for game controllers. [CHAR LIMIT=35] -->
