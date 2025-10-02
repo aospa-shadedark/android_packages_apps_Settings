@@ -111,9 +111,7 @@
 
     <com.android.settings.applications.PifDataPreference
         android:key="pif_data_setting"
-        android:title="@string/pif_data_title"
-        android:summary="@string/pif_data_summary"
-        android:defaultValue=""/>
+        android:title="@string/pif_data_title"/>
 
     <PreferenceCategory
         android:key="advanced_category"
