@@ -120,6 +120,12 @@
         android:summary="@string/gphotos_spoof_summary"
         android:defaultValue="true" />
 
+    <Preference
+        android:key="pixel_spoofing_apps"
+        android:title="@string/pixel_spoofing_apps_title"
+        android:summary="@string/pixel_spoofing_apps_summary"
+        android:fragment="com.android.settings.applications.PixelSpoofingAppsSettings" />
+
     <PreferenceCategory
         android:key="advanced_category"
         android:title="@string/advanced_apps"
