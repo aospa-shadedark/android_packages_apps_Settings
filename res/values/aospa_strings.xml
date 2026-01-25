@@ -32,4 +32,9 @@
     <string name="pixel_spoofing_apps_title">Pixel spoofing apps</string>
     <string name="pixel_spoofing_apps_summary">Select apps to spoof as Pixel 10 Pro XL</string>
 
+    <!-- Google Play Integrity Spoof -->
+    <string name="spoofing_integrity_category_title">Google Play Integrity</string>
+    <string name="pi_spoof_title">Google Play Integrity spoof</string>
+    <string name="pi_spoof_summary">Spoof your device as different model for Google Play Integrity</string>
+
 </resources>
