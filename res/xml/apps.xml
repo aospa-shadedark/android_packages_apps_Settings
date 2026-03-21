@@ -115,6 +115,12 @@
         android:title="@string/special_access"
         android:order="20"/>
 
+    <co.aospa.framework.preference.SystemPropertySwitchPreference
+        android:key="persist.sys.pairip.activity.block"
+        android:title="@string/miscellaneous_pairip_activity_block_title"
+        android:summary="@string/miscellaneous_pairip_activity_block_summary"
+        android:defaultValue="false" /> 
+
     <PreferenceCategory
         android:key="advanced_category"
         android:title="@string/advanced_apps"
