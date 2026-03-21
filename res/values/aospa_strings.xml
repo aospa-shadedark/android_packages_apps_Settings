@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2024 Paranoid Android
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+
+    <!-- Miscellaneous -->
+    <string name="miscellaneous_pairip_activity_block_title">Block PairIP license verification</string>
+    <string name="miscellaneous_pairip_activity_block_summary">Prevent Play Store apps from launching the \"Get this app from Play\" screen when not installed by the Play Store</string>
+
+</resources>
