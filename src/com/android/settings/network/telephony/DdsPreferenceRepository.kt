@@ -36,7 +36,11 @@ class DdsPreferenceRepository(
     private fun isInEcbModeFlow(): Flow<Boolean> {
         return flow {
             val telephonyManager = context.getSystemService(TelephonyManager::class.java)
-            val isEcbmEnabled = telephonyManager!!.getEmergencyCallbackMode()
+            val isEcbmEnabled = try {
+                telephonyManager!!.getEmergencyCallbackMode()
+            } catch (e: UnsupportedOperationException) {
+                false
+            }
             val isScbmEnabled = TelephonyProperties.in_scbm().orElse(false)
             emit(isEcbmEnabled || isScbmEnabled)
         }.onEach {  Log.d(TAG, "isInEcbMode: $it") }

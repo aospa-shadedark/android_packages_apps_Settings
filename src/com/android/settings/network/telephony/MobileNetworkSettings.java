@@ -15,8 +15,8 @@
  */
 
 /*
- * Changes from Qualcomm Innovation Center, Inc. are provided under the following license:
- * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
+ * Changes from Qualcomm Technologies, Inc. are provided under the following license:
+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
  * SPDX-License-Identifier: BSD-3-Clause-Clear
  */
 
@@ -383,7 +383,14 @@ public class MobileNetworkSettings extends AbstractMobileNetworkSettings impleme
         }
         if (TextUtils.equals(key, BUTTON_CDMA_SYSTEM_SELECT_KEY)
                 || TextUtils.equals(key, BUTTON_CDMA_SUBSCRIPTION_KEY)) {
-            if (mTelephonyManager.getEmergencyCallbackMode()) {
+            boolean isEmergencyCallbackMode = false;
+            try {
+                isEmergencyCallbackMode = mTelephonyManager.getEmergencyCallbackMode();
+            } catch (UnsupportedOperationException e) {
+                // Device doesn't support FEATURE_TELEPHONY_CALLING, not in ECM mode.
+                Log.d(LOG_TAG, "getEmergencyCallbackMode is unsupported");
+            }
+            if (isEmergencyCallbackMode) {
                 startActivityForResult(
                         new Intent(TelephonyManager.ACTION_SHOW_NOTICE_ECM_BLOCK_OTHERS, null)
                                 .setPackage(Utils.PHONE_PACKAGE_NAME),

@@ -15,8 +15,8 @@
  */
 
 /*
- * Changes from Qualcomm Innovation Center, Inc. are provided under the following license:
- * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
+ * Changes from Qualcomm Technologies, Inc. are provided under the following license:
+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
  * SPDX-License-Identifier: BSD-3-Clause-Clear
  */
 
@@ -211,7 +211,12 @@ public class BackupCallingPreferenceController extends TelephonyTogglePreference
             // Assign the current call state to show the correct preference state even before the
             // first onCallStateChanged() by initial registration.
             if (mTelephonyManager != null) {
-                mCallState = mTelephonyManager.getCallState(subId);
+                try {
+                    mCallState = mTelephonyManager.getCallState(subId);
+                } catch (UnsupportedOperationException e) {
+                    Log.d(LOG_TAG, "getCallState is unsupported");
+                    mCallState = TelephonyManager.CALL_STATE_IDLE;
+                }
                 mTelephonyManager.registerTelephonyCallback(context.getMainExecutor(), this);
             }
         }

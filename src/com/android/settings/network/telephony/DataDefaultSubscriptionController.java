@@ -15,6 +15,13 @@
   * See the License for the specific language governing permissions and
   * limitations under the License.
   */
+
+/*
+ * Changes from Qualcomm Technologies, Inc. are provided under the following license:
+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+ * SPDX-License-Identifier: BSD-3-Clause-Clear
+ */
+
 package com.android.settings.network.telephony;
 
 import android.content.Context;
@@ -110,7 +117,12 @@ public class DataDefaultSubscriptionController extends DefaultSubscriptionContro
             return;
         }
         if (preference != null) {
-            boolean isEcbmEnabled = mTelephonyManager.getEmergencyCallbackMode();
+            boolean isEcbmEnabled = false;
+            try {
+                isEcbmEnabled = mTelephonyManager.getEmergencyCallbackMode();
+            } catch (UnsupportedOperationException e) {
+                // Device doesn't support FEATURE_TELEPHONY_CALLING, not in ECM mode.
+            }
             boolean isScbmEnabled = TelephonyProperties.in_scbm().orElse(false);
             boolean isSmartDdsEnabled = isSmartDdsEnabled();
 

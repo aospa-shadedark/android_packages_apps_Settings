@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/*
+ * Changes from Qualcomm Technologies, Inc. are provided under the following license:
+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+ * SPDX-License-Identifier: BSD-3-Clause-Clear
+ */
+
 package com.android.settings.network.telephony.cdma;
 
 import android.content.Context;
@@ -35,7 +41,13 @@ public class CdmaListPreference extends ListPreference {
     @Override
     protected void onClick() {
         // Only show dialog when it is not in ECM
-        if (mTelephonyManager == null || !mTelephonyManager.getEmergencyCallbackMode()) {
+        boolean isInEcbMode = false;
+        try {
+            isInEcbMode = mTelephonyManager != null && mTelephonyManager.getEmergencyCallbackMode();
+        } catch (UnsupportedOperationException e) {
+            // Device doesn't support FEATURE_TELEPHONY_CALLING, not in ECM mode.
+        }
+        if (!isInEcbMode) {
             super.onClick();
         }
     }
