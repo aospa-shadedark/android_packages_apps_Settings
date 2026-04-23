@@ -92,6 +92,17 @@
         android:fragment="com.android.settings.users.UserSettings"
         settings:controller="com.android.settings.users.MultiUserPreferenceController"/>
 
+    <PreferenceCategory
+        android:title="@string/device_spoof_category_title">
+
+        <Preference
+            android:key="spoofing"
+            android:title="@string/spoofing_title"
+            android:summary="@string/spoofing_summary"
+            android:fragment="com.android.settings.system.Spoofing" />
+
+    </PreferenceCategory>
+
     <com.android.settings.spa.preference.ComposePreference
         android:key="developer_options"
         android:order="-40"
