@@ -121,15 +121,15 @@
         android:summary="@string/pi_spoof_summary"
         android:defaultValue="true" />
 
-    <com.android.settings.applications.KeyboxDataPreference
-        android:key="keybox_data_setting"
-        android:dependency="persist.sys.pihooks.pi"
-        android:title="@string/keybox_data_title"/>
-
     <com.android.settings.applications.PifDataPreference
         android:key="pif_data_setting"
         android:dependency="persist.sys.pihooks.pi"
         android:title="@string/pif_data_title"/>
+
+    <com.android.settings.applications.KeyboxDataPreference
+        android:key="keybox_data_setting"
+        android:dependency="persist.sys.pihooks.pi"
+        android:title="@string/keybox_data_title"/>
 
     <Preference
         android:key="pif_props"
