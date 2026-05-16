@@ -32,4 +32,14 @@
     <string name="display_cutout_force_fullscreen_search_apps">Search apps</string>
     <string name="display_cutout_force_fullscreen_loading">Loading apps\u2026</string>
 
+    <string name="please_wait">Please wait</string>
+    <string name="fetching_pif_properties">Fetching PIF properties...</string>
+    <string name="enable_play_integrity_spoofing_first">Enable Play Integrity Spoofing first</string>
+    <string name="auto_updated_pif">Auto-updated PIF:</string>
+    <string name="manually_imported_pif">Manually imported PIF:</string>
+    <string name="play_integrity_fix_properties">Play Integrity Fix Properties</string>
+    <string name="not_set">Not set</string>
+    <string name="pif_updated_successfully">PIF updated successfully</string>
+    <string name="failed_to_update_pif">Failed to update PIF</string>
+
 </resources>
