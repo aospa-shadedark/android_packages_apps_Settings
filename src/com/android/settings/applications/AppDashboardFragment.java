@@ -198,7 +198,7 @@ public class AppDashboardFragment extends DashboardFragment {
         if (pifUpdate != null) {
             pifUpdate.setOnPreferenceClickListener(preference -> {
                 if (!android.os.SystemProperties.getBoolean(SYS_SPOOF_PI, true)) {
-                    Toast.makeText(getContext(), "Enable Play Integrity Spoofing first", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.enable_play_integrity_spoofing_first, Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 new UpdatePifTask().execute();
@@ -222,7 +222,7 @@ public class AppDashboardFragment extends DashboardFragment {
                 Settings.Secure.PIF_DATA);
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Auto-updated PIF:\n");
+        sb.append(getString(R.string.auto_updated_pif)).append("\n");
         if (fetchedPif != null && !fetchedPif.isEmpty()) {
             try {
                 JSONObject json = new JSONObject(fetchedPif);
@@ -231,10 +231,10 @@ public class AppDashboardFragment extends DashboardFragment {
                 sb.append(fetchedPif);
             }
         } else {
-            sb.append("Not set");
+            sb.append(getString(R.string.not_set));
         }
 
-        sb.append("\n\nManually imported PIF:\n");
+        sb.append("\n\n" + getString(R.string.manually_imported_pif) + "\n");
         if (pifData != null && !pifData.isEmpty()) {
             try {
                 JSONObject json = new JSONObject(pifData);
@@ -243,11 +243,11 @@ public class AppDashboardFragment extends DashboardFragment {
                 sb.append(pifData);
             }
         } else {
-            sb.append("Not set");
+            sb.append(getString(R.string.not_set));
         }
 
         new AlertDialog.Builder(getContext())
-                .setTitle("Play Integrity Fix Properties")
+                .setTitle(R.string.play_integrity_fix_properties)
                 .setMessage(sb.toString())
                 .setPositiveButton(android.R.string.ok, null)
                 .show();
@@ -285,9 +285,9 @@ public class AppDashboardFragment extends DashboardFragment {
                 Settings.Secure.putString(getContext().getContentResolver(),
                         Settings.Secure.FETCHED_PIF, result);
                 killTargetPackages(true);
-                Toast.makeText(getContext(), "PIF updated successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.pif_updated_successfully, Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(getContext(), "Failed to update PIF", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.failed_to_update_pif, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -309,8 +309,8 @@ public class AppDashboardFragment extends DashboardFragment {
 
     private void getRandomFingerprint() {
         final AlertDialog dialog = new AlertDialog.Builder(requireContext())
-                .setTitle("Please wait")
-                .setMessage("Fetching PIF properties...")
+                .setTitle(R.string.please_wait)
+                .setMessage(R.string.fetching_pif_properties)
                 .setCancelable(false)
                 .setView(new ProgressBar(requireContext()))
                 .create();
