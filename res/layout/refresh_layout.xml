@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Open VIP can improve the speed of decompilation, resource code translate to name automatically and activate the smart editing and automatic completion function-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="1"
+    android:padding="8dp"
+    android:layout_width="-1"
+    android:layout_height="-1">
+    <EditText
+        android:textColor="@01060003"
+        android:textColorHint="@01060000"
+        android:id="@7F0A023A"
+        android:background="@7F0800A3"
+        android:padding="12dp"
+        android:layout_width="-1"
+        android:layout_height="-2"
+        android:layout_marginBottom="8dp"
+        android:hint="@string/search_apps"
+        android:inputType="0x00000001"
+        android:elevation="2dp" />
+    <LinearLayout
+        android:gravity="0x00800005"
+        android:orientation="0"
+        android:layout_width="-1"
+        android:layout_height="-2"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
+        <Button
+            android:textColor="@7F06004C"
+            android:id="@7F0A022E"
+            android:background="@7F0800A1"
+            android:paddingLeft="24dp"
+            android:paddingTop="8dp"
+            android:paddingRight="24dp"
+            android:paddingBottom="8dp"
+            android:layout_width="-2"
+            android:layout_height="-2"
+            android:text="@string/save_configs"
+            android:elevation="2dp" />
+        <Button
+            android:textColor="@7F06004C"
+            android:id="@7F0A0220"
+            android:background="@7F0800A1"
+            android:paddingLeft="24dp"
+            android:paddingTop="8dp"
+            android:paddingRight="24dp"
+            android:paddingBottom="8dp"
+            android:layout_width="-2"
+            android:layout_height="-2"
+            android:text="@string/reset_configs"
+            android:layout_marginStart="8dp"
+            android:elevation="2dp" />
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@7F0A021C"
+        android:layout_width="-1"
+        android:layout_height="0dp"
+        android:layout_weight="1.0" />
+</LinearLayout>
