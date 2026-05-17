@@ -32,4 +32,8 @@
     <string name="display_cutout_force_fullscreen_search_apps">Search apps</string>
     <string name="display_cutout_force_fullscreen_loading">Loading apps\u2026</string>
 
+    <string name="search_apps">Search apps...</string>
+    <string name="save_configs">Save Configs</string>
+    <string name="reset_configs">Reset Configs</string>
+     
 </resources>
