@@ -42,4 +42,8 @@
     <string name="pif_updated_successfully">PIF updated successfully</string>
     <string name="failed_to_update_pif">Failed to update PIF</string>
 
+    <string name="search_apps">Search apps...</string>
+    <string name="save_configs">Save Configs</string>
+    <string name="reset_configs">Reset Configs</string>
+     
 </resources>
