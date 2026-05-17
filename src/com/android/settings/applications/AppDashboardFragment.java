@@ -231,7 +231,7 @@ public class AppDashboardFragment extends DashboardFragment {
                 sb.append(fetchedPif);
             }
         } else {
-            sb.append("Not set");
+            sb.append(getString(R.string.not_set));
         }
 
         sb.append("\n\n" + getString(R.string.manually_imported_pif) + "\n");
