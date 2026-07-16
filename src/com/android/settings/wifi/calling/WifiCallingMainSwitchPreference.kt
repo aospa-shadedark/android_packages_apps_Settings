@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/*
+ * Changes from Qualcomm Technologies, Inc. are provided under the following license:
+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+ * SPDX-License-Identifier: BSD-3-Clause-Clear
+ */
+
 package com.android.settings.wifi.calling
 
 import android.Manifest.permission.MODIFY_PHONE_STATE
@@ -29,6 +35,7 @@ import com.android.settings.R
 import com.android.settings.contract.KEY_WIFI_CALLING
 import com.android.settings.metrics.PreferenceActionMetricsProvider
 import com.android.settings.network.ims.WifiCallingQueryImsState
+import com.android.settings.network.telephony.TelephonyUtils
 import com.android.settings.network.telephony.wificalling.WifiCallingRepository
 import com.android.settings.widget.SettingsMainSwitchPreference
 import com.android.settings.wifi.calling.WifiCallingSettingsForSub.getCarrierActivityIntent
@@ -131,8 +138,12 @@ class WifiCallingMainSwitchPreference(private val subId: Int) :
         const val KEY = "wifi_calling_switch"
         const val TAG = KEY
 
-        private fun Context.isCallStateIdle(subId: Int) =
-            getSystemService(TelephonyManager::class.java)?.getCallState(subId) ==
+        private fun Context.isCallStateIdle(subId: Int): Boolean {
+            if (!TelephonyUtils.isFeatureTelephonyCallingSupported(this)) {
+                return true
+            }
+            return getSystemService(TelephonyManager::class.java)?.getCallState(subId) ==
                 TelephonyManager.CALL_STATE_IDLE
+        }
     }
 }

@@ -1,7 +1,8 @@
 /*
-* Copyright (c) 2024-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-* SPDX-License-Identifier: BSD-3-Clause-Clear
-*/
+ * Changes from Qualcomm Technologies, Inc. are provided under the following license:
+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+ * SPDX-License-Identifier: BSD-3-Clause-Clear
+ */
 
 package com.android.settings.network.telephony;
 
@@ -22,8 +23,10 @@ public class RoamingPreferenceControllerUtil {
     public static SparseBooleanArray sIsCiwlanEnabled;
     public static SparseBooleanArray sIsInCiwlanOnlyMode;
     public static SparseBooleanArray sIsImsRegisteredOnCiwlan;
+    private static Context sContext;
 
     public static void init(Context context) {
+        sContext = context.getApplicationContext();
         sTelephonyManager = context.getSystemService(TelephonyManager.class);
         sSubscriptionManager = context.getSystemService(SubscriptionManager.class);
     }
@@ -42,11 +45,16 @@ public class RoamingPreferenceControllerUtil {
         sIsCiwlanEnabled = new SparseBooleanArray(activeSubIdList.length);
         sIsInCiwlanOnlyMode = new SparseBooleanArray(activeSubIdList.length);
         sIsImsRegisteredOnCiwlan = new SparseBooleanArray(activeSubIdList.length);
+        boolean hasTelephonyCalling = TelephonyUtils.isFeatureTelephonyCallingSupported(sContext);
         for (int i = 0; i < activeSubIdList.length; i++) {
             int subid = activeSubIdList[i];
             TelephonyManager tm = sTelephonyManager.createForSubscriptionId(subid);
-            sIsSubInCall.put(subid, tm.getCallStateForSubscription() !=
-                    TelephonyManager.CALL_STATE_IDLE);
+            boolean isInCall = false;
+            if (hasTelephonyCalling) {
+                isInCall = tm.getCallStateForSubscription() !=
+                        TelephonyManager.CALL_STATE_IDLE;
+            }
+            sIsSubInCall.put(subid, isInCall);
             sIsCiwlanModeSupported.put(subid, MobileNetworkSettings.isCiwlanModeSupported(subid));
             sIsCiwlanEnabled.put(subid, MobileNetworkSettings.isCiwlanEnabled(subid));
             sIsInCiwlanOnlyMode.put(subid, MobileNetworkSettings.isInCiwlanOnlyMode(subid));

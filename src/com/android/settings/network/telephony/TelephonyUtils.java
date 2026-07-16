@@ -37,6 +37,7 @@
 package com.android.settings.network.telephony;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.SystemProperties;
@@ -299,5 +300,21 @@ public final class TelephonyUtils {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Returns {@code true} if the device supports telephony calling
+     * ({@link PackageManager#FEATURE_TELEPHONY_CALLING}), {@code false} otherwise.
+     *
+     * <p>This is a static system property that does not change at runtime, so callers in loops
+     * should cache the result rather than calling this method on every iteration.
+     *
+     * @param context the context used to access {@link PackageManager}; returns {@code false} if
+     *                {@code null}
+     */
+    public static boolean isFeatureTelephonyCallingSupported(Context context) {
+        if (context == null) return false;
+        return context.getPackageManager()
+                .hasSystemFeature(PackageManager.FEATURE_TELEPHONY_CALLING);
     }
 }

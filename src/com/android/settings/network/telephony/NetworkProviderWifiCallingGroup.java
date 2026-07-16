@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/*
+ * Changes from Qualcomm Technologies, Inc. are provided under the following license:
+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+ * SPDX-License-Identifier: BSD-3-Clause-Clear
+ */
+
 package com.android.settings.network.telephony;
 
 import static androidx.lifecycle.Lifecycle.Event;
@@ -204,6 +210,7 @@ public class NetworkProviderWifiCallingGroup extends
 
     private void setSubscriptionInfoForPreference(Map<Integer, Preference> toRemovePreferences) {
         int order = PREF_START_ORDER;
+        boolean hasTelephonyCalling = TelephonyUtils.isFeatureTelephonyCallingSupported(mContext);
         for (SubscriptionInfo info : mSubInfoListForWfc) {
             final int subId = info.getSubscriptionId();
 
@@ -241,8 +248,12 @@ public class NetworkProviderWifiCallingGroup extends
                 return true;
             });
 
-            pref.setEnabled(getTelephonyManagerForSubscriptionId(subId)
-                    .getCallStateForSubscription() == TelephonyManager.CALL_STATE_IDLE);
+            boolean isCallStateIdle = true;
+            if (hasTelephonyCalling) {
+                isCallStateIdle = getTelephonyManagerForSubscriptionId(subId)
+                        .getCallStateForSubscription() == TelephonyManager.CALL_STATE_IDLE;
+            }
+            pref.setEnabled(isCallStateIdle);
             pref.setOrder(order++);
 
             int resId = com.android.internal.R.string.wifi_calling_off_summary;

@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-/* Changes from Qualcomm Innovation Center, Inc. are provided under the following license:
- * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
+/*
+ * Changes from Qualcomm Technologies, Inc. are provided under the following license:
+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
  * SPDX-License-Identifier: BSD-3-Clause-Clear
  */
 
@@ -299,11 +300,17 @@ public class MobileDataPreferenceController extends TelephonyTogglePreferenceCon
             mIsCiwlanEnabled = new SparseBooleanArray(activeSubIdList.length);
             mIsInCiwlanOnlyMode = new SparseBooleanArray(activeSubIdList.length);
             mIsImsRegisteredOnCiwlan = new SparseBooleanArray(activeSubIdList.length);
+            boolean hasTelephonyCalling = TelephonyUtils.isFeatureTelephonyCallingSupported(
+                    mContext);
             for (int i = 0; i < activeSubIdList.length; i++) {
                 int subId = activeSubIdList[i];
                 TelephonyManager tm = mTelephonyManager.createForSubscriptionId(subId);
-                mIsSubInCall.put(subId, tm.getCallStateForSubscription() !=
-                        TelephonyManager.CALL_STATE_IDLE);
+                boolean isInCall = false;
+                if (hasTelephonyCalling) {
+                    isInCall = tm.getCallStateForSubscription() !=
+                            TelephonyManager.CALL_STATE_IDLE;
+                }
+                mIsSubInCall.put(subId, isInCall);
                 mIsCiwlanModeSupported.put(subId, MobileNetworkSettings.isCiwlanModeSupported(
                         subId));
                 mIsCiwlanEnabled.put(subId, MobileNetworkSettings.isCiwlanEnabled(subId));

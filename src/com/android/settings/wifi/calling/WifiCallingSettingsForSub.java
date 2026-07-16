@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/*
+ * Changes from Qualcomm Technologies, Inc. are provided under the following license:
+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+ * SPDX-License-Identifier: BSD-3-Clause-Clear
+ */
+
 package com.android.settings.wifi.calling;
 
 import android.app.Activity;
@@ -59,6 +65,7 @@ import com.android.settings.core.SubSettingLauncher;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.network.ims.WifiCallingQueryImsState;
 import com.android.settings.network.telephony.AbstractSubscriptionPreferenceController;
+import com.android.settings.network.telephony.TelephonyUtils;
 import com.android.settings.network.telephony.wificalling.IWifiCallingRepository;
 import com.android.settings.network.telephony.wificalling.WifiCallingRepository;
 import com.android.settings.widget.SettingsMainSwitchPreference;
@@ -133,9 +140,12 @@ public class WifiCallingSettingsForSub extends DashboardFragment
                     getPreferenceScreen().findPreference(SWITCH_BAR);
             if (prefSwitch != null) {
                 isWfcEnabled = prefSwitch.isChecked();
-                isCallStateIdle = getTelephonyManagerForSub(
-                        WifiCallingSettingsForSub.this.mSubId).getCallStateForSubscription()
-                        == TelephonyManager.CALL_STATE_IDLE;
+                isCallStateIdle = true;
+                if (TelephonyUtils.isFeatureTelephonyCallingSupported(activity)) {
+                    isCallStateIdle = getTelephonyManagerForSub(
+                            WifiCallingSettingsForSub.this.mSubId).getCallStateForSubscription()
+                            == TelephonyManager.CALL_STATE_IDLE;
+                }
 
                 boolean isNonTtyOrTtyOnVolteEnabled = true;
                 if (isWfcEnabled || isCallStateIdle) {

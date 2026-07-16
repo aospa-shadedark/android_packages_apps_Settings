@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/*
+ * Changes from Qualcomm Technologies, Inc. are provided under the following license:
+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+ * SPDX-License-Identifier: BSD-3-Clause-Clear
+ */
+
 package com.android.settings.network;
 
 import static android.net.wifi.WifiConfiguration.NetworkSelectionStatus.NETWORK_SELECTION_ENABLED;
@@ -29,6 +35,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.EthernetManager;
 import android.net.NetworkTemplate;
@@ -75,6 +82,7 @@ import com.android.settings.network.ethernet.EthernetInterfaceDetailsFragment;
 import com.android.settings.network.ethernet.EthernetSwitchPreferenceController;
 import com.android.settings.network.ethernet.EthernetTracker;
 import com.android.settings.network.ethernet.EthernetTrackerImpl;
+import com.android.settings.network.telephony.TelephonyUtils;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settings.wifi.AddNetworkFragment;
 import com.android.settings.wifi.AddWifiNetworkPreference;
@@ -1559,8 +1567,15 @@ public class NetworkProviderSettings extends RestrictedDashboardFragment
 
     @VisibleForTesting
     boolean isPhoneOnCall() {
-        TelephonyManager mTelephonyManager = getActivity().getSystemService(TelephonyManager.class);
-        int state = mTelephonyManager.getCallState();
+        Activity activity = getActivity();
+        if (activity == null) {
+            return false;
+        }
+        if (!TelephonyUtils.isFeatureTelephonyCallingSupported(activity)) {
+            return false;
+        }
+        TelephonyManager telephonyManager = activity.getSystemService(TelephonyManager.class);
+        int state = telephonyManager.getCallState();
         return state != TelephonyManager.CALL_STATE_IDLE;
     }
 
