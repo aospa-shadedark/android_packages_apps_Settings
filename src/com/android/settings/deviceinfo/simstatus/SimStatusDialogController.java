@@ -62,8 +62,6 @@ import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.android.internal.telephony.PhoneConstants;
-
 import com.android.settings.R;
 import com.android.settings.network.SubscriptionUtil;
 import com.android.settings.network.telephony.DomesticRoamUtils;
@@ -833,8 +831,7 @@ public class SimStatusDialogController implements DefaultLifecycleObserver {
 
     @VisibleForTesting
     boolean isCdmaLteEnabled() {
-        return mTelephonyManager.getLteOnCdmaMode(mSubscriptionInfo.getSubscriptionId())
-                == PhoneConstants.LTE_ON_CDMA_TRUE;
+        return false;
     }
 
     @VisibleForTesting

@@ -91,7 +91,7 @@ public class BatteryDefenderTip extends BatteryTip {
         }
 
         cardPreference.setSelectable(false);
-        cardPreference.setIconResId(getIconId());
+        cardPreference.setIcon(getIconId());
 
         final String helpUrl = context.getString(getHelpResource());
         if (!android.text.TextUtils.isEmpty(helpUrl)) {
