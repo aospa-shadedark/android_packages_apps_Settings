@@ -5284,13 +5284,14 @@
     <string name="game_device_identity_enable_summary">Off · Saved profiles are paused</string>
     <string name="game_device_identity_enabled_summary">On · Profiles apply when games open</string>
     <string name="game_device_identity_intro_title">A profile for every game</string>
-    <string name="game_device_identity_intro_summary">Choose a Pixel profile or import your own. Your choices stay saved when spoofing is off.</string>
+    <string name="game_device_identity_intro_summary">Choose a device profile or import your own. Your choices stay saved when spoofing is off.</string>
     <string name="game_device_identity_profiles_title">Profiles</string>
     <string name="game_device_identity_footer">Changing this switch or an active profile closes affected games. Reopen them to apply changes. Hardware, device attestation and Play Integrity stay unchanged.</string>
     <string name="game_device_identity_games_title">Installed games</string>
     <string name="game_device_identity_no_games">No games yet</string>
     <string name="game_device_identity_no_games_summary">Installed games will appear here. You can still import profiles now.</string>
     <string name="game_device_identity_profile_off">Device default</string>
+    <string name="game_device_identity_device_default_summary">Use this device’s original identity</string>
     <string name="game_device_identity_profile_paused">%1$s · Paused</string>
     <string name="game_device_identity_save_error">Could not save the game profile</string>
     <string name="game_device_identity_import_title">Import profiles</string>
@@ -5303,32 +5304,6 @@
         <item quantity="one">Imported %1$d game profile</item>
         <item quantity="other">Imported %1$d game profiles</item>
     </plurals>
-    <string-array name="game_device_identity_profile_entries">
-        <item>Device default</item>
-        <item>Google Pixel 6 Pro</item>
-        <item>Google Pixel 7 Pro</item>
-        <item>Google Pixel 8 Pro</item>
-        <item>Google Pixel 9 Pro</item>
-    </string-array>
-    <string-array name="game_device_identity_profile_descriptions">
-        <item>Use this device’s original identity</item>
-        <item>Google · raven</item>
-        <item>Google · cheetah</item>
-        <item>Google · husky</item>
-        <item>Google · caiman</item>
-    </string-array>
-    <string-array name="game_device_identity_profile_values">
-        <item>pixel_6_pro</item>
-        <item>pixel_7_pro</item>
-        <item>pixel_8_pro</item>
-        <item>pixel_9_pro</item>
-    </string-array>
-    <string-array name="game_device_identity_profile_names">
-        <item>Google Pixel 6 Pro</item>
-        <item>Google Pixel 7 Pro</item>
-        <item>Google Pixel 8 Pro</item>
-        <item>Google Pixel 9 Pro</item>
-    </string-array>
     <!-- Introduction for game controller remapping page. [CHAR LIMIT=NONE] -->
     <string name="game_controller_remapping_settings_intro">Customize the actions triggered by your controller\u2019s buttons</string>
     <!-- Title for the preference category for key remapping for game controllers. [CHAR LIMIT=35] -->

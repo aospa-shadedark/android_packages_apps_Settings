@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-FileCopyrightText: 2026 kenway214
+     SPDX-FileCopyrightText: 2026 Paranoid Android
+     SPDX-License-Identifier: Apache-2.0 -->
+<resources>
+    <!-- Values and labels have the same ordering, including the device default. -->
+    <string-array name="game_device_identity_profile_values" translatable="false">
+        <item>none</item>
+        <item>pixel_6_pro</item>
+        <item>pixel_7_pro</item>
+        <item>pixel_8_pro</item>
+        <item>pixel_9_pro</item>
+        <item>pixel_10_pro_xl</item>
+        <item>asus_rog_6d_ultimate</item>
+        <item>asus_rog_8_pro</item>
+        <item>asus_rog_9_pro</item>
+        <item>oneplus_8_pro</item>
+        <item>oneplus_12</item>
+        <item>oneplus_13</item>
+        <item>redmagic_9_pro</item>
+        <item>redmagic_10_pro</item>
+        <item>redmagic_11_pro</item>
+        <item>galaxy_s25_ultra</item>
+        <item>poco_f5</item>
+    </string-array>
+    <string-array name="game_device_identity_profile_entries" translatable="false">
+        <item>@string/game_device_identity_profile_off</item>
+        <item>Google Pixel 6 Pro</item>
+        <item>Google Pixel 7 Pro</item>
+        <item>Google Pixel 8 Pro</item>
+        <item>Google Pixel 9 Pro</item>
+        <item>Google Pixel 10 Pro XL</item>
+        <item>ASUS ROG Phone 6D Ultimate</item>
+        <item>ASUS ROG Phone 8 Pro</item>
+        <item>ASUS ROG Phone 9 Pro</item>
+        <item>OnePlus 8 Pro 5G</item>
+        <item>OnePlus 12</item>
+        <item>OnePlus 13</item>
+        <item>REDMAGIC 9 Pro</item>
+        <item>REDMAGIC 10 Pro</item>
+        <item>REDMAGIC 11 Pro</item>
+        <item>Samsung Galaxy S25 Ultra</item>
+        <item>POCO F5</item>
+    </string-array>
+    <string-array name="game_device_identity_profile_descriptions" translatable="false">
+        <item>@string/game_device_identity_device_default_summary</item>
+        <item>Google · raven</item>
+        <item>Google · cheetah</item>
+        <item>Google · husky</item>
+        <item>Google · caiman</item>
+        <item>Google · mustang</item>
+        <item>ASUS · AI2203</item>
+        <item>ASUS · ASUS_AI2401_D</item>
+        <item>ASUS · ASUS_AI2501</item>
+        <item>OnePlus · IN2023</item>
+        <item>OnePlus · CPH2581</item>
+        <item>OnePlus · PJZ110</item>
+        <item>nubia · NX769J</item>
+        <item>nubia · NX789J</item>
+        <item>REDMAGIC · NX809J</item>
+        <item>Samsung · SM-S938B</item>
+        <item>Xiaomi · 23049PCD8G</item>
+    </string-array>
+</resources>

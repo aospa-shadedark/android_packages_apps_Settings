@@ -51,9 +51,6 @@ public class GameDeviceIdentitySettings extends SettingsPreferenceFragment {
     private static final String SETTING_GAME_IDENTITIES = "game_device_identity_profiles";
     static final String VALUE_NONE = "none";
     static final String VALUE_CUSTOM = "custom_json";
-    static final String[] PROFILE_VALUES = {
-            VALUE_NONE, "pixel_6_pro", "pixel_7_pro", "pixel_8_pro", "pixel_9_pro"
-    };
     private static final String[] BUILD_FIELDS = {
             "BRAND", "DEVICE", "MANUFACTURER", "MODEL", "FINGERPRINT", "PRODUCT"
     };
@@ -286,7 +283,8 @@ public class GameDeviceIdentitySettings extends SettingsPreferenceFragment {
     }
 
     private boolean isKnownProfile(String profile) {
-        for (String value : PROFILE_VALUES) {
+        for (String value : getResources().getStringArray(
+                R.array.game_device_identity_profile_values)) {
             if (value.equals(profile)) return true;
         }
         return false;
@@ -299,7 +297,7 @@ public class GameDeviceIdentitySettings extends SettingsPreferenceFragment {
         final String[] values = context.getResources().getStringArray(
                 R.array.game_device_identity_profile_values);
         final String[] entries = context.getResources().getStringArray(
-                R.array.game_device_identity_profile_names);
+                R.array.game_device_identity_profile_entries);
         for (int i = 0; i < values.length; i++) {
             if (values[i].equals(profile)) return entries[i];
         }

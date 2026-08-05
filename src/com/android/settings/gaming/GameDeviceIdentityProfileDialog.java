@@ -55,8 +55,8 @@ public class GameDeviceIdentityProfileDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         final Bundle args = requireArguments();
-        final List<String> values = new ArrayList<>(
-                Arrays.asList(GameDeviceIdentitySettings.PROFILE_VALUES));
+        final List<String> values = new ArrayList<>(Arrays.asList(
+                getResources().getStringArray(R.array.game_device_identity_profile_values)));
         final List<String> titles = new ArrayList<>(Arrays.asList(
                 getResources().getStringArray(R.array.game_device_identity_profile_entries)));
         final List<String> summaries = new ArrayList<>(Arrays.asList(
