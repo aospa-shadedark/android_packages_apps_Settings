@@ -150,6 +150,10 @@ public class SettingsPanelActivity extends FragmentActivity {
             window.setGravity(Gravity.BOTTOM);
             window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,
                     WindowManager.LayoutParams.WRAP_CONTENT);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                window.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+                window.getAttributes().setBlurBehindRadius(80);
+            }
             setupNavigationBar();
             mPanelFragment = new PanelFragment();
             mPanelFragment.setArguments(new Bundle(mBundle));
