@@ -144,6 +144,21 @@ public class PanelFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
+        final Bundle arguments = getArguments();
+        final String action = arguments != null ? arguments.getString(SettingsPanelActivity.KEY_PANEL_TYPE_ARGUMENT) : null;
+        if (android.provider.Settings.Panel.ACTION_APP_VOLUME.equals(action)) {
+            return AppVolumeComposeHelper.createView(requireContext(),
+                    () -> {
+                        android.content.Intent seeMore = new android.content.Intent(android.provider.Settings.ACTION_SOUND_SETTINGS)
+                                .addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(seeMore);
+                        if (getActivity() != null) getActivity().finish();
+                    },
+                    () -> {
+                        if (getActivity() != null) getActivity().finish();
+                    });
+        }
+
         mLayoutView = inflater.inflate(R.layout.panel_layout, container, false);
         mLayoutView.getViewTreeObserver()
                 .addOnGlobalLayoutListener(mPanelLayoutListener);
