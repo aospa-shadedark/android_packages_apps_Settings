@@ -83,4 +83,9 @@
     <string name="multi_audio_focus_title">Multi audio focus</string>
     <string name="multi_audio_focus_summary">Allow multiple apps to play audio simultaneously</string>
 
+    <!-- Title for the Bluetooth device details preference that chooses which audio codec a paired device is played with. [CHAR LIMIT=40] -->
+    <string name="bluetooth_details_audio_codec_title">Audio codec</string>
+    <!-- Summary shown when the audio codec of a paired device cannot be read or chosen. [CHAR LIMIT=40] -->
+    <string name="bluetooth_details_audio_codec_unavailable">Not available</string>
+
 </resources>
