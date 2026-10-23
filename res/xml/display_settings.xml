@@ -55,6 +55,11 @@
             android:summary="@string/qs_brightness_position_summary"
             android:defaultValue="false" />
 
+        <co.aospa.framework.preference.SystemSettingSwitchPreference
+            android:key="qs_brightness_slider_round"
+            android:title="@string/qs_brightness_slider_round_title"
+            android:defaultValue="false" />
+
         <com.android.settingslib.PrimarySwitchPreference
             android:fragment="com.android.settings.display.HdrBrightnessSettings"
             android:key="hdr_preference"

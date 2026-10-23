@@ -12,6 +12,7 @@
     <string name="qs_show_brightness_both">Quick Settings and Quick QS</string>
     <string name="qs_brightness_position_title">Move to bottom</string>
     <string name="qs_brightness_position_summary">Show the brightness slider at the bottom of the panel</string>
+    <string name="qs_brightness_slider_round_title">Rounded brightness slider</string>
 
     <!-- Miscellaneous -->
     <string name="miscellaneous_pairip_activity_block_title">Block PairIP license verification</string>
