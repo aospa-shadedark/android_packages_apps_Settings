@@ -10,9 +10,12 @@
     <string name="qs_show_brightness_hide">Hide</string>
     <string name="qs_show_brightness_normal">Quick Settings</string>
     <string name="qs_show_brightness_both">Quick Settings and Quick QS</string>
+    <string name="qs_settings_category_title">Quick Settings</string>
     <string name="qs_brightness_position_title">Move to bottom</string>
     <string name="qs_brightness_position_summary">Show the brightness slider at the bottom of the panel</string>
     <string name="qs_brightness_slider_round_title">Rounded brightness slider</string>
+    <string name="qs_tiles_circular_title">Circular Quick Settings tiles</string>
+    <string name="qs_tiles_circular_summary">Use circular corners, with pill shapes on wide tiles</string>
     <string name="qs_show_auto_brightness_title">Show auto-brightness button</string>
     <string name="qs_show_auto_brightness_summary">Show the auto-brightness button next to the brightness slider in Quick Settings</string>
 

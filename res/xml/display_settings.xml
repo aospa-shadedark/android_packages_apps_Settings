@@ -42,6 +42,21 @@
             settings:userRestriction="no_config_brightness"
             settings:controller="com.android.settings.display.AutoBrightnessPreferenceController" />
 
+        <com.android.settingslib.PrimarySwitchPreference
+            android:fragment="com.android.settings.display.HdrBrightnessSettings"
+            android:key="hdr_preference"
+            android:persistent="false"
+            android:title="@string/hdr_brightness_title"
+            settings:keywords="@string/keywords_display_hdr_brightness"
+            settings:controller="com.android.settings.display.HdrBrightnessPreferenceController"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="category_quick_settings"
+        android:title="@string/qs_settings_category_title"
+        android:order="-195">
+
         <co.aospa.framework.preference.SystemSettingListPreference
             android:key="qs_show_brightness"
             android:title="@string/qs_show_brightness_title"
@@ -66,14 +81,11 @@
             android:summary="@string/qs_show_auto_brightness_summary"
             android:defaultValue="true" />
 
-        <com.android.settingslib.PrimarySwitchPreference
-            android:fragment="com.android.settings.display.HdrBrightnessSettings"
-            android:key="hdr_preference"
-            android:persistent="false"
-            android:title="@string/hdr_brightness_title"
-            settings:keywords="@string/keywords_display_hdr_brightness"
-            settings:controller="com.android.settings.display.HdrBrightnessPreferenceController"/>
-
+        <co.aospa.framework.preference.SystemSettingSwitchPreference
+            android:key="qs_tiles_circular"
+            android:title="@string/qs_tiles_circular_title"
+            android:summary="@string/qs_tiles_circular_summary"
+            android:defaultValue="false" />
     </PreferenceCategory>
 
     <PreferenceCategory
