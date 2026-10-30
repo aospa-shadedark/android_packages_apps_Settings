@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2026 Paranoid Android
+     SPDX-License-Identifier: Apache-2.0
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:settings="http://schemas.android.com/apk/res-auto"
+    android:key="circular_qs_settings"
+    android:title="@string/qs_tiles_circular_title">
+
+    <co.aospa.framework.preference.SystemSettingSwitchPreference
+        android:key="qs_tiles_circular"
+        android:title="@string/qs_tiles_circular_switch_title"
+        android:summary="@string/qs_tiles_circular_summary"
+        android:defaultValue="false" />
+
+    <co.aospa.framework.preference.CustomSystemSeekBarPreference
+        android:key="qs_tiles_circular_size"
+        android:title="@string/qs_tiles_circular_size_title"
+        android:summary="@string/qs_tiles_circular_size_summary"
+        android:dependency="qs_tiles_circular"
+        android:defaultValue="72"
+        android:max="80"
+        settings:min="72"
+        settings:interval="1"
+        settings:units="dp"
+        settings:showButtons="false"
+        settings:continuousUpdates="false"
+        settings:textStart="@string/qs_tiles_circular_size_standard"
+        settings:textEnd="@string/qs_tiles_circular_size_large" />
+
+</PreferenceScreen>

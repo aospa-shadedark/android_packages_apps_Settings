@@ -16,6 +16,12 @@
     <string name="qs_brightness_slider_round_title">Rounded brightness slider</string>
     <string name="qs_tiles_circular_title">Circular Quick Settings tiles</string>
     <string name="qs_tiles_circular_summary">Use circular corners, with pill shapes on wide tiles</string>
+    <string name="qs_tiles_circular_settings_summary">Choose tile shape and size</string>
+    <string name="qs_tiles_circular_switch_title">Use circular tiles</string>
+    <string name="qs_tiles_circular_size_title">Tile size</string>
+    <string name="qs_tiles_circular_size_summary">Scale tiles and their icon backgrounds together</string>
+    <string name="qs_tiles_circular_size_standard">Default</string>
+    <string name="qs_tiles_circular_size_large">Large</string>
     <string name="qs_show_auto_brightness_title">Show auto-brightness button</string>
     <string name="qs_show_auto_brightness_summary">Show the auto-brightness button next to the brightness slider in Quick Settings</string>
 

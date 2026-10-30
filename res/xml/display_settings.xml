@@ -81,11 +81,11 @@
             android:summary="@string/qs_show_auto_brightness_summary"
             android:defaultValue="true" />
 
-        <co.aospa.framework.preference.SystemSettingSwitchPreference
-            android:key="qs_tiles_circular"
+        <Preference
+            android:key="circular_qs_settings"
             android:title="@string/qs_tiles_circular_title"
-            android:summary="@string/qs_tiles_circular_summary"
-            android:defaultValue="false" />
+            android:summary="@string/qs_tiles_circular_settings_summary"
+            android:fragment="com.android.settings.display.CircularQsSettings" />
     </PreferenceCategory>
 
     <PreferenceCategory
