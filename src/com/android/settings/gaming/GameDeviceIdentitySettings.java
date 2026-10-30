@@ -4,6 +4,7 @@
 package com.android.settings.gaming;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.preference.ListPreference;
@@ -34,12 +36,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /** Per-game Build identity profiles, applied by ActivityThread when each game starts. */
 public class GameDeviceIdentitySettings extends SettingsPreferenceFragment {
+    private static final String TAG = "GameDeviceIdentity";
     private static final String SETTING_GAME_IDENTITIES_ENABLED = "game_device_identity_enabled";
     private static final String SETTING_GAME_IDENTITIES = "game_device_identity_profiles";
     private static final String VALUE_NONE = "none";
@@ -95,6 +101,7 @@ public class GameDeviceIdentitySettings extends SettingsPreferenceFragment {
                         Toast.LENGTH_SHORT).show();
                 return false;
             }
+            restartGamePackages(context, () -> readIdentities(context).keys(), true);
             return true;
         });
         mScreen.addPreference(enabled);
@@ -172,6 +179,9 @@ public class GameDeviceIdentitySettings extends SettingsPreferenceFragment {
                             Toast.LENGTH_SHORT).show();
                     return false;
                 }
+                if (isGameIdentityEnabled(context)) {
+                    restartGamePackages(context, Collections.singleton(packageName));
+                }
                 changedPreference.setSummary(VALUE_CUSTOM.equals(profile)
                         ? getCustomProfileSummary(context, readIdentities(context)
                                 .optJSONObject(packageName))
@@ -225,6 +235,43 @@ public class GameDeviceIdentitySettings extends SettingsPreferenceFragment {
                     SETTING_GAME_IDENTITIES, value, UserHandle.myUserId());
         } catch (JSONException e) {
             return false;
+        }
+    }
+
+    private boolean isGameIdentityEnabled(Context context) {
+        return Settings.System.getIntForUser(context.getContentResolver(),
+                SETTING_GAME_IDENTITIES_ENABLED, 0, UserHandle.myUserId()) == 1;
+    }
+
+    private void restartGamePackages(Context context, Iterator<String> packageNames) {
+        final Set<String> packages = new HashSet<>();
+        while (packageNames.hasNext()) packages.add(packageNames.next());
+        restartGamePackages(context, packages, false);
+    }
+
+    private void restartGamePackages(Context context, Iterable<String> packageNames) {
+        restartGamePackages(context, packageNames, false);
+    }
+
+    private void restartGamePackages(Context context, Iterable<String> packageNames,
+            boolean forceWhenDisabled) {
+        if (!forceWhenDisabled && !isGameIdentityEnabled(context)) return;
+        final ActivityManager activityManager = context.getSystemService(ActivityManager.class);
+        if (activityManager == null) return;
+
+        final PackageManager packageManager = context.getPackageManager();
+        for (String packageName : packageNames) {
+            if (!isValidPackageName(packageName)) continue;
+            try {
+                final ApplicationInfo app = packageManager.getApplicationInfo(packageName, 0);
+                if (app.category != ApplicationInfo.CATEGORY_GAME || !app.enabled
+                        || packageManager.getLaunchIntentForPackage(packageName) == null) {
+                    continue;
+                }
+                activityManager.forceStopPackage(packageName);
+            } catch (PackageManager.NameNotFoundException | RuntimeException e) {
+                Log.w(TAG, "Unable to restart game after identity update: " + packageName, e);
+            }
         }
     }
 
@@ -291,6 +338,7 @@ public class GameDeviceIdentitySettings extends SettingsPreferenceFragment {
                     new String(output.toByteArray(), StandardCharsets.UTF_8));
             final JSONObject identities = readIdentities(context);
             int importedPackages = 0;
+            final Set<String> importedPackageNames = new HashSet<>();
             final Iterator<String> keys = root.keys();
             while (keys.hasNext()) {
                 final String key = keys.next();
@@ -309,6 +357,7 @@ public class GameDeviceIdentitySettings extends SettingsPreferenceFragment {
                         throw new IOException("Too many game profiles in JSON file");
                     }
                     identities.put(packageName, new JSONObject(profile.toString()));
+                    importedPackageNames.add(packageName);
                     importedPackages++;
                 }
             }
@@ -320,6 +369,7 @@ public class GameDeviceIdentitySettings extends SettingsPreferenceFragment {
                     SETTING_GAME_IDENTITIES, identities.toString(), UserHandle.myUserId())) {
                 throw new IOException("Unable to save imported game profiles");
             }
+            restartGamePackages(context, importedPackageNames);
             updateGamePreferences();
             Toast.makeText(context,
                     context.getResources().getQuantityString(
