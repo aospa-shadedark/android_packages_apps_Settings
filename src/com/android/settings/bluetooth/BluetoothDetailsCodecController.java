@@ -17,46 +17,32 @@
 package com.android.settings.bluetooth;
 
 import android.bluetooth.BluetoothA2dp;
-import android.bluetooth.BluetoothCodecConfig;
-import android.bluetooth.BluetoothCodecStatus;
-import android.bluetooth.BluetoothCodecType;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.preference.ListPreference;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceScreen;
 
-import com.android.settings.R;
 import com.android.settingslib.bluetooth.A2dpProfile;
 import com.android.settingslib.bluetooth.CachedBluetoothDevice;
 import com.android.settingslib.bluetooth.LocalBluetoothManager;
 import com.android.settingslib.bluetooth.LocalBluetoothProfileManager;
 import com.android.settingslib.core.lifecycle.Lifecycle;
 
-import java.util.ArrayList;
-import java.util.List;
-
-/** Controller for choosing the A2DP codec a single paired device is played with. */
-public class BluetoothDetailsCodecController extends BluetoothDetailsController
-        implements Preference.OnPreferenceChangeListener {
-    private static final String TAG = "BluetoothDetailsCodecController";
-
+/** Hosts the A2DP codec chooser for a single paired device. */
+public class BluetoothDetailsCodecController extends BluetoothDetailsController {
     private static final String KEY_BT_AUDIO_DEVICE_TYPE_GROUP =
             "bluetooth_audio_device_type_group";
     private static final String KEY_BT_AUDIO_CODEC = "bluetooth_audio_codec";
-
     private final LocalBluetoothProfileManager mProfileManager;
-
     @VisibleForTesting PreferenceGroup mCodecContainer;
-
+    @Nullable private BluetoothCodecPreference mCodecPreference;
     private final BroadcastReceiver mCodecConfigReceiver =
             new BroadcastReceiver() {
                 @Override
@@ -64,8 +50,6 @@ public class BluetoothDetailsCodecController extends BluetoothDetailsController
                     refresh();
                 }
             };
-
-    @Nullable private ListPreference mCodecPreference;
 
     public BluetoothDetailsCodecController(
             Context context,
@@ -79,8 +63,8 @@ public class BluetoothDetailsCodecController extends BluetoothDetailsController
 
     @Override
     public boolean isAvailable() {
-        A2dpProfile a2dpProfile = mProfileManager.getA2dpProfile();
-        return a2dpProfile != null && a2dpProfile.isEnabled(mCachedDevice.getDevice());
+        A2dpProfile profile = mProfileManager.getA2dpProfile();
+        return profile != null && profile.isEnabled(mCachedDevice.getDevice());
     }
 
     @Override
@@ -88,7 +72,8 @@ public class BluetoothDetailsCodecController extends BluetoothDetailsController
         super.onResume();
         IntentFilter filter = new IntentFilter(BluetoothA2dp.ACTION_CODEC_CONFIG_CHANGED);
         filter.addAction(BluetoothA2dp.ACTION_ACTIVE_DEVICE_CHANGED);
-        mContext.registerReceiver(mCodecConfigReceiver, filter);
+        filter.addAction(BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED);
+        mContext.registerReceiver(mCodecConfigReceiver, filter, Context.RECEIVER_EXPORTED);
     }
 
     @Override
@@ -110,96 +95,15 @@ public class BluetoothDetailsCodecController extends BluetoothDetailsController
 
     @Override
     protected void refresh() {
-        if (mCodecContainer == null) {
-            return;
-        }
+        if (mCodecContainer == null) return;
         if (mCodecPreference == null) {
-            mCodecPreference = new ListPreference(mCodecContainer.getContext());
+            mCodecPreference = new BluetoothCodecPreference(mCodecContainer.getContext());
             mCodecPreference.setKey(KEY_BT_AUDIO_CODEC);
-            mCodecPreference.setTitle(R.string.bluetooth_details_audio_codec_title);
-            mCodecPreference.setDialogTitle(R.string.bluetooth_details_audio_codec_title);
-            mCodecPreference.setOnPreferenceChangeListener(this);
+            mCodecPreference.configure(
+                    mCachedDevice::getDevice, mProfileManager::getA2dpProfile, false);
             mCodecContainer.addPreference(mCodecPreference);
         }
-        updateCodecPreference(mCodecPreference);
-    }
-
-    private void updateCodecPreference(ListPreference codecPreference) {
-        BluetoothCodecStatus codecStatus = getCodecStatus();
-        if (codecStatus == null) {
-            codecPreference.setEnabled(false);
-            codecPreference.setSummary(R.string.bluetooth_details_audio_codec_unavailable);
-            return;
-        }
-
-        List<CharSequence> names = new ArrayList<>();
-        List<CharSequence> ids = new ArrayList<>();
-        for (BluetoothCodecConfig config : codecStatus.getCodecsSelectableCapabilities()) {
-            BluetoothCodecType codecType = config.getExtendedCodecType();
-            if (codecType == null) {
-                continue;
-            }
-            names.add(codecType.getCodecName());
-            ids.add(Long.toString(codecType.getCodecId()));
-        }
-        if (ids.isEmpty()) {
-            codecPreference.setEnabled(false);
-            codecPreference.setSummary(R.string.bluetooth_details_audio_codec_unavailable);
-            return;
-        }
-
-        codecPreference.setEntries(names.toArray(new CharSequence[0]));
-        codecPreference.setEntryValues(ids.toArray(new CharSequence[0]));
-        codecPreference.setEnabled(true);
-
-        BluetoothCodecType current =
-                codecStatus.getCodecConfig() == null
-                        ? null
-                        : codecStatus.getCodecConfig().getExtendedCodecType();
-        if (current != null && ids.contains(Long.toString(current.getCodecId()))) {
-            codecPreference.setValue(Long.toString(current.getCodecId()));
-            codecPreference.setSummary(current.getCodecName());
-        } else {
-            codecPreference.setSummary(R.string.bluetooth_details_audio_codec_unavailable);
-        }
-    }
-
-    @Override
-    public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if (!(preference instanceof ListPreference) || !(newValue instanceof String)) {
-            return false;
-        }
-        if (!KEY_BT_AUDIO_CODEC.equals(preference.getKey())) {
-            return false;
-        }
-        A2dpProfile a2dpProfile = mProfileManager.getA2dpProfile();
-        BluetoothCodecStatus codecStatus = getCodecStatus();
-        if (a2dpProfile == null || codecStatus == null) {
-            return false;
-        }
-        long codecId = Long.parseLong((String) newValue);
-        for (BluetoothCodecConfig config : codecStatus.getCodecsSelectableCapabilities()) {
-            BluetoothCodecType codecType = config.getExtendedCodecType();
-            if (codecType == null || codecType.getCodecId() != codecId) {
-                continue;
-            }
-            Log.d(TAG, "onPreferenceChange: selecting " + codecType.getCodecName());
-            a2dpProfile.setCodecConfigPreference(
-                    mCachedDevice.getDevice(),
-                    new BluetoothCodecConfig.Builder()
-                            .setExtendedCodecType(codecType)
-                            .setCodecPriority(BluetoothCodecConfig.CODEC_PRIORITY_HIGHEST)
-                            .build());
-            return false;
-        }
-        Log.e(TAG, "onPreferenceChange: codec " + codecId + " is not selectable");
-        return false;
-    }
-
-    @Nullable
-    private BluetoothCodecStatus getCodecStatus() {
-        A2dpProfile a2dpProfile = mProfileManager.getA2dpProfile();
-        return a2dpProfile == null ? null : a2dpProfile.getCodecStatus(mCachedDevice.getDevice());
+        mCodecPreference.refresh();
     }
 
     @VisibleForTesting

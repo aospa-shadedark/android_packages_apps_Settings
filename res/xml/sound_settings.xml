@@ -179,6 +179,14 @@
             android:defaultValue="false"
             android:order="-108"/>
 
+        <Preference
+            android:key="audio_output_settings"
+            android:title="@string/audio_output_title"
+            android:summary="@string/audio_output_summary"
+            settings:keywords="@string/audio_output_keywords"
+            android:fragment="com.android.settings.sound.AudioOutputSettings"
+            android:order="-104"/>
+
         <!-- Adaptive Playback -->
         <Preference
             android:key="sound_adaptive_playback_summary"

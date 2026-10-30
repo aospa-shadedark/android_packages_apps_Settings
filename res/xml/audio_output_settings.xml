@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/audio_output_title">
+    <PreferenceCategory android:title="@string/audio_output_current">
+        <Preference android:key="audio_output_device" android:selectable="false" />
+    </PreferenceCategory>
+    <PreferenceCategory android:key="audio_output_format"
+        android:title="@string/audio_output_reported">
+        <Preference android:key="audio_output_codec" android:title="@string/audio_output_codec" android:selectable="false" />
+        <Preference android:key="audio_output_rate" android:title="@string/audio_output_rate" android:selectable="false" />
+        <Preference android:key="audio_output_depth" android:title="@string/audio_output_depth" android:selectable="false" />
+        <Preference android:key="audio_output_channels" android:title="@string/audio_output_channels" android:selectable="false" />
+        <Preference android:key="audio_output_codec_help"
+            android:summary="@string/audio_output_codec_help" android:selectable="false" />
+        <Preference android:key="audio_output_format_note"
+            android:summary="@string/audio_output_no_active_format" android:selectable="false" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/audio_output_controls">
+        <Preference android:key="audio_output_aptx_preferences"
+            android:title="@string/bluetooth_aptx_preferences_title"
+            android:summary="@string/bluetooth_aptx_preferences_summary" />
+        <Preference android:key="audio_output_device_settings"
+            android:title="@string/audio_output_device_settings"
+            android:summary="@string/audio_output_device_settings_summary" />
+        <Preference android:key="audio_output_switch" android:title="@string/audio_output_switch"
+            android:summary="@string/audio_output_switch_summary" />
+        <Preference android:key="audio_output_balance" android:title="@string/audio_output_balance"
+            android:summary="@string/audio_output_balance_summary"
+            android:fragment="com.android.settings.accessibility.AudioAdjustmentFragment" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/audio_output_display">
+        <co.aospa.framework.preference.SystemSettingSwitchPreference
+            android:key="show_audio_codec_indicator"
+            android:title="@string/show_audio_codec_indicator_title"
+            android:summary="@string/show_audio_codec_indicator_summary"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+    <PreferenceCategory android:key="audio_output_capabilities"
+        android:title="@string/audio_output_supported_profiles" />
+    <PreferenceCategory android:key="audio_output_mixers"
+        android:title="@string/audio_output_mixers" />
+    <PreferenceCategory android:title="@string/audio_output_diagnostics">
+        <Preference android:key="audio_output_copy" android:title="@string/audio_output_copy"
+            android:summary="@string/audio_output_copy_summary" />
+    </PreferenceCategory>
+    <com.android.settingslib.widget.FooterPreference android:key="audio_output_footer"
+        android:title="@string/audio_output_footer" android:selectable="false" />
+</PreferenceScreen>

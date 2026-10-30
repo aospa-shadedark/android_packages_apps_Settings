@@ -704,6 +704,7 @@ public class Settings extends SettingsActivity {
      * Activity for MediaControlsSettings
      */
     public static class MediaControlsSettingsActivity extends SettingsActivity {}
+    public static class AudioOutputSettingsActivity extends SettingsActivity {}
 
     /**
      * Activity for AppDashboard.

@@ -199,4 +199,8 @@
     <string name="action_later">Later</string>
     <string name="action_reboot_now">Reboot now</string>
 
+    <!-- Audio information in media controls -->
+    <string name="show_audio_codec_indicator_title">Audio format label</string>
+    <string name="show_audio_codec_indicator_summary">Show the Bluetooth codec or wired connection below the device name on the media player\'s output button</string>
+
 </resources>
