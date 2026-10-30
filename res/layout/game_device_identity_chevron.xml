@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="24dp"
+    android:layout_height="24dp"
+    android:layout_gravity="center_vertical"
+    android:importantForAccessibility="no"
+    android:src="@drawable/ic_chevron_right_24dp"
+    android:tint="@color/settingslib_materialColorOnSurfaceVariant" />

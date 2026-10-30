@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<resources>
+    <style name="TextAppearance.GameIdentity.ChoiceTitle"
+        parent="TextAppearance.SettingsLib.TitleMedium.Emphasized">
+        <item name="android:textColor">@color/game_device_identity_choice_title</item>
+    </style>
+    <style name="TextAppearance.GameIdentity.ChoiceSummary"
+        parent="TextAppearance.SettingsLib.BodySmall">
+        <item name="android:textColor">@color/game_device_identity_choice_summary</item>
+    </style>
+    <dimen name="game_device_identity_dialog_inset">16dp</dimen>
+    <dimen name="game_device_identity_choice_gap">4dp</dimen>
+</resources>

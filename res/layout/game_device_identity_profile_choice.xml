@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="72dp"
+    android:background="@drawable/game_device_identity_choice_background"
+    android:checkMark="?android:attr/listChoiceIndicatorSingle"
+    android:checkMarkTint="@color/game_device_identity_choice_title"
+    android:gravity="start|center_vertical"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="16dp"
+    android:singleLine="false"
+    android:textAlignment="viewStart"
+    android:textAppearance="@style/TextAppearance.SettingsLib.BodyMedium"
+    android:textDirection="locale" />

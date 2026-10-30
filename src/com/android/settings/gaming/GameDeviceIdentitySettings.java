@@ -18,14 +18,15 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceScreen;
-import androidx.preference.SwitchPreferenceCompat;
 
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
+import com.android.settingslib.widget.FooterPreference;
+import com.android.settingslib.widget.LayoutPreference;
+import com.android.settingslib.widget.MainSwitchPreference;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,9 +49,9 @@ public class GameDeviceIdentitySettings extends SettingsPreferenceFragment {
     private static final String TAG = "GameDeviceIdentity";
     private static final String SETTING_GAME_IDENTITIES_ENABLED = "game_device_identity_enabled";
     private static final String SETTING_GAME_IDENTITIES = "game_device_identity_profiles";
-    private static final String VALUE_NONE = "none";
-    private static final String VALUE_CUSTOM = "custom_json";
-    private static final String[] PROFILE_VALUES = {
+    static final String VALUE_NONE = "none";
+    static final String VALUE_CUSTOM = "custom_json";
+    static final String[] PROFILE_VALUES = {
             VALUE_NONE, "pixel_6_pro", "pixel_7_pro", "pixel_8_pro", "pixel_9_pro"
     };
     private static final String[] BUILD_FIELDS = {
@@ -59,13 +60,83 @@ public class GameDeviceIdentitySettings extends SettingsPreferenceFragment {
     private static final int REQUEST_GAME_PROFILE_JSON = 7412;
     private static final int MAX_GAME_PROFILE_JSON_BYTES = 256 * 1024;
     private static final int MAX_IMPORTED_PACKAGES = 512;
+    private static final String PROFILE_DIALOG_TAG = "game_identity_profile";
 
-    private PreferenceScreen mScreen;
+    private MainSwitchPreference mEnabled;
+    private PreferenceCategory mGames;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        mScreen = getPreferenceManager().createPreferenceScreen(getPrefContext());
-        setPreferenceScreen(mScreen);
+        final Context context = getPrefContext();
+        final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
+        setPreferenceScreen(screen);
+
+        final LayoutPreference intro = new LayoutPreference(context,
+                R.layout.game_device_identity_intro);
+        intro.setSelectable(false);
+        screen.addPreference(intro);
+
+        mEnabled = new MainSwitchPreference(context);
+        mEnabled.setKey(SETTING_GAME_IDENTITIES_ENABLED);
+        mEnabled.setPersistent(false);
+        mEnabled.setTitle(R.string.game_device_identity_enable_title);
+        mEnabled.setIconSpaceReserved(false);
+        mEnabled.setOnPreferenceChangeListener((preference, value) -> {
+            final boolean enabled = Boolean.TRUE.equals(value);
+            if (!Settings.System.putIntForUser(context.getContentResolver(),
+                    SETTING_GAME_IDENTITIES_ENABLED, enabled ? 1 : 0, UserHandle.myUserId())) {
+                Toast.makeText(context, R.string.game_device_identity_save_error,
+                        Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            restartGamePackages(context, () -> readIdentities(context).keys(), true);
+            updateGamePreferences();
+            return true;
+        });
+        screen.addPreference(mEnabled);
+
+        final PreferenceCategory profiles = new PreferenceCategory(context);
+        profiles.setTitle(R.string.game_device_identity_profiles_title);
+        screen.addPreference(profiles);
+
+        final Preference importProfiles = new Preference(context);
+        importProfiles.setKey("import_game_identity_profiles");
+        importProfiles.setTitle(R.string.game_device_identity_import_title);
+        importProfiles.setSummary(R.string.game_device_identity_import_summary);
+        importProfiles.setIcon(R.drawable.ic_upload);
+        importProfiles.setWidgetLayoutResource(R.layout.game_device_identity_chevron);
+        importProfiles.setOnPreferenceClickListener(preference -> {
+            final Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("application/json");
+            startActivityForResult(intent, REQUEST_GAME_PROFILE_JSON);
+            return true;
+        });
+        profiles.addPreference(importProfiles);
+
+        mGames = new PreferenceCategory(context);
+        mGames.setTitle(R.string.game_device_identity_games_title);
+        screen.addPreference(mGames);
+
+        final FooterPreference footer = new FooterPreference(context);
+        footer.setTitle(R.string.game_device_identity_footer);
+        screen.addPreference(footer);
+
+        getChildFragmentManager().setFragmentResultListener(
+                GameDeviceIdentityProfileDialog.RESULT_KEY, this, (key, result) -> {
+                    final String packageName = result.getString(
+                            GameDeviceIdentityProfileDialog.RESULT_PACKAGE, "");
+                    final String profile = result.getString(
+                            GameDeviceIdentityProfileDialog.RESULT_PROFILE, VALUE_NONE);
+                    if (!isValidPackageName(packageName)
+                            || !saveProfile(context, packageName, profile)) {
+                        Toast.makeText(context, R.string.game_device_identity_save_error,
+                                Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    restartGamePackages(context, Collections.singleton(packageName));
+                    updateGamePreferences();
+                });
         updateGamePreferences();
     }
 
@@ -76,84 +147,34 @@ public class GameDeviceIdentitySettings extends SettingsPreferenceFragment {
     }
 
     private void updateGamePreferences() {
-        if (mScreen == null || getContext() == null) return;
-        mScreen.removeAll();
+        if (mGames == null || getContext() == null) return;
 
         final Context context = getPrefContext();
-        final Preference intro = new Preference(context);
-        intro.setSelectable(false);
-        intro.setTitle(R.string.game_device_identity_intro_title);
-        intro.setSummary(R.string.game_device_identity_intro_summary);
-        mScreen.addPreference(intro);
-
-        final SwitchPreferenceCompat enabled = new SwitchPreferenceCompat(context);
-        enabled.setKey(SETTING_GAME_IDENTITIES_ENABLED);
-        enabled.setPersistent(false);
-        enabled.setTitle(R.string.game_device_identity_enable_title);
-        enabled.setSummary(R.string.game_device_identity_enable_summary);
-        enabled.setChecked(Settings.System.getIntForUser(context.getContentResolver(),
-                SETTING_GAME_IDENTITIES_ENABLED, 0, UserHandle.myUserId()) == 1);
-        enabled.setOnPreferenceChangeListener((preference, value) -> {
-            final int enabledValue = Boolean.TRUE.equals(value) ? 1 : 0;
-            if (!Settings.System.putIntForUser(context.getContentResolver(),
-                    SETTING_GAME_IDENTITIES_ENABLED, enabledValue, UserHandle.myUserId())) {
-                Toast.makeText(context, R.string.game_device_identity_save_error,
-                        Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            restartGamePackages(context, () -> readIdentities(context).keys(), true);
-            return true;
-        });
-        mScreen.addPreference(enabled);
-
-        final Preference importProfiles = new Preference(context);
-        importProfiles.setTitle(R.string.game_device_identity_import_title);
-        importProfiles.setSummary(R.string.game_device_identity_import_summary);
-        importProfiles.setOnPreferenceClickListener(preference -> {
-            final Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType("application/json");
-            startActivityForResult(intent, REQUEST_GAME_PROFILE_JSON);
-            return true;
-        });
-        mScreen.addPreference(importProfiles);
-
-        final PreferenceCategory games = new PreferenceCategory(context);
-        games.setTitle(R.string.game_device_identity_games_title);
-        mScreen.addPreference(games);
+        final boolean enabled = isGameIdentityEnabled(context);
+        mEnabled.setChecked(enabled);
+        mEnabled.setSummary(enabled ? R.string.game_device_identity_enabled_summary
+                : R.string.game_device_identity_enable_summary);
+        mGames.removeAll();
 
         final List<ApplicationInfo> installedGames = getInstalledGames(context.getPackageManager());
         if (installedGames.isEmpty()) {
-            final Preference empty = new Preference(context);
+            final LayoutPreference empty = new LayoutPreference(context,
+                    R.layout.game_device_identity_empty);
             empty.setSelectable(false);
-            empty.setTitle(R.string.game_device_identity_no_games);
-            games.addPreference(empty);
+            mGames.addPreference(empty);
             return;
         }
 
         final JSONObject identities = readIdentities(context);
         for (ApplicationInfo app : installedGames) {
-            final ListPreference preference = new ListPreference(context);
+            final Preference preference = new Preference(context);
             final String packageName = app.packageName;
             final CharSequence label = context.getPackageManager().getApplicationLabel(app);
             preference.setKey("game_identity_" + packageName);
             preference.setPersistent(false);
             preference.setTitle(label);
-            preference.setDialogTitle(label);
-            final List<CharSequence> profileEntries = new ArrayList<>();
-            final List<CharSequence> profileValues = new ArrayList<>();
-            for (String entry : context.getResources().getStringArray(
-                    R.array.game_device_identity_profile_entries)) {
-                profileEntries.add(entry);
-            }
-            for (String value : PROFILE_VALUES) {
-                profileValues.add(value);
-            }
-            try {
-                preference.setIcon(context.getPackageManager().getApplicationIcon(app));
-            } catch (PackageManager.NameNotFoundException ignored) {
-                // The package may be removed while this page is being refreshed.
-            }
+            preference.setIcon(context.getPackageManager().getApplicationIcon(app));
+            preference.setWidgetLayoutResource(R.layout.game_device_identity_chevron);
 
             final JSONObject customProfile = identities.optJSONObject(packageName);
             final String currentProfile = identities.optString(packageName, VALUE_NONE);
@@ -161,34 +182,23 @@ public class GameDeviceIdentitySettings extends SettingsPreferenceFragment {
             final CharSequence currentSummary;
             if (customProfile != null) {
                 currentSummary = getCustomProfileSummary(context, customProfile);
-                profileEntries.add(currentSummary);
-                profileValues.add(VALUE_CUSTOM);
                 selectedProfile = VALUE_CUSTOM;
             } else {
                 selectedProfile = isKnownProfile(currentProfile) ? currentProfile : VALUE_NONE;
                 currentSummary = getProfileSummary(context, currentProfile);
             }
-            preference.setEntries(profileEntries.toArray(new CharSequence[0]));
-            preference.setEntryValues(profileValues.toArray(new CharSequence[0]));
-            preference.setValue(selectedProfile);
-            preference.setSummary(currentSummary);
-            preference.setOnPreferenceChangeListener((changedPreference, value) -> {
-                final String profile = String.valueOf(value);
-                if (!saveProfile(context, packageName, profile)) {
-                    Toast.makeText(context, R.string.game_device_identity_save_error,
-                            Toast.LENGTH_SHORT).show();
-                    return false;
+            preference.setSummary(!enabled && !VALUE_NONE.equals(selectedProfile)
+                    ? context.getString(R.string.game_device_identity_profile_paused, currentSummary)
+                    : currentSummary);
+            preference.setOnPreferenceClickListener(clicked -> {
+                if (getChildFragmentManager().findFragmentByTag(PROFILE_DIALOG_TAG) == null) {
+                    GameDeviceIdentityProfileDialog.newInstance(packageName, label.toString(),
+                            selectedProfile, customProfile == null ? null : currentSummary.toString())
+                            .show(getChildFragmentManager(), PROFILE_DIALOG_TAG);
                 }
-                if (isGameIdentityEnabled(context)) {
-                    restartGamePackages(context, Collections.singleton(packageName));
-                }
-                changedPreference.setSummary(VALUE_CUSTOM.equals(profile)
-                        ? getCustomProfileSummary(context, readIdentities(context)
-                                .optJSONObject(packageName))
-                        : getProfileSummary(context, profile));
                 return true;
             });
-            games.addPreference(preference);
+            mGames.addPreference(preference);
         }
     }
 
