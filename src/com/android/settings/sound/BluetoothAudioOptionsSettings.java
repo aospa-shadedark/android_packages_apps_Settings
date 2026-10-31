@@ -30,6 +30,7 @@ import com.android.settings.R;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.development.BluetoothA2dpConfigStore;
 import com.android.settings.development.BluetoothServiceConnectionListener;
+import com.android.settings.development.bluetooth.BluetoothBitPerSampleDialogPreferenceController;
 import com.android.settings.development.bluetooth.BluetoothSampleRateDialogPreferenceController;
 import com.android.settingslib.core.AbstractPreferenceController;
 
@@ -113,6 +114,9 @@ public class BluetoothAudioOptionsSettings extends DashboardFragment {
         List<AbstractPreferenceController> controllers = new ArrayList<>();
         controllers.add(
                 new BluetoothSampleRateDialogPreferenceController(
+                        context, getSettingsLifecycle(), mConfigStore));
+        controllers.add(
+                new BluetoothBitPerSampleDialogPreferenceController(
                         context, getSettingsLifecycle(), mConfigStore));
         return controllers;
     }
