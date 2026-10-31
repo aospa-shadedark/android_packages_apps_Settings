@@ -35,9 +35,7 @@
     <string name="audio_output_stereo">Stereo</string>
     <string name="audio_output_controls">Listening controls</string>
     <string name="audio_output_diagnostics">Diagnostics</string>
-    <string name="audio_output_codec_help">Bluetooth reports the format currently negotiated with this device. To change the codec, open Device settings.</string>
-    <string name="audio_output_device_settings">Device settings</string>
-    <string name="audio_output_device_settings_summary">Change the Bluetooth codec and manage this device\'s available audio options</string>
+    <string name="audio_output_codec_help">Bluetooth reports the format currently negotiated with this device. To change the codec, open this device in Bluetooth settings.</string>
     <string name="bluetooth_aptx_preferences_title">aptX preferences</string>
     <string name="bluetooth_aptx_preferences_summary">Quality, gaming, and sample-rate options in Qualcomm settings</string>
     <string name="audio_output_switch">Change output or volume</string>

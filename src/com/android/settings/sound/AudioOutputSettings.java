@@ -142,12 +142,6 @@ public class AudioOutputSettings extends DashboardFragment {
         PreferenceCategory mixers = findPreference("audio_output_mixers");
         capabilities.setInitialExpandedChildrenCount(0);
         mixers.setInitialExpandedChildrenCount(0);
-        findPreference("audio_output_device_settings")
-                .setOnPreferenceClickListener(
-                        preference -> {
-                            openDeviceSettings();
-                            return true;
-                        });
         findPreference("audio_output_aptx_preferences")
                 .setOnPreferenceClickListener(
                         preference -> {
@@ -245,7 +239,6 @@ public class AudioOutputSettings extends DashboardFragment {
             value.setSummary(R.string.audio_output_unreported);
         }
         findPreference("audio_output_codec_help").setVisible(false);
-        findPreference("audio_output_device_settings").setVisible(false);
         findPreference("audio_output_aptx_preferences").setVisible(false);
         findPreference("audio_output_copy").setEnabled(!outputs.isEmpty());
         StringBuilder report =
@@ -283,7 +276,6 @@ public class AudioOutputSettings extends DashboardFragment {
                     .append('\n')
                     .append(devicePreference.getSummary())
                     .append('\n');
-            findPreference("audio_output_device_settings").setVisible(bluetoothDevice != null);
             boolean a2dp = output.getType() == AudioDeviceInfo.TYPE_BLUETOOTH_A2DP;
             BluetoothCodecStatus status = a2dp ? codecStatus(bluetoothDevice) : null;
             findPreference("audio_output_aptx_preferences")
@@ -487,19 +479,6 @@ public class AudioOutputSettings extends DashboardFragment {
         }
     }
 
-    private void openDeviceSettings() {
-        // Resolve again at click time; never open controls for a device that was unplugged.
-        List<AudioDeviceInfo> outputs = mAudioManager.getAudioDevicesForAttributes(MEDIA);
-        BluetoothDevice device = outputs.size() == 1 ? bluetoothDevice(outputs.get(0)) : null;
-        if (device == null) return;
-        Bundle args = new Bundle();
-        args.putString("device_address", device.getAddress());
-        startActivity(
-                new Intent("com.android.settings.BLUETOOTH_DEVICE_DETAIL_SETTINGS")
-                        .setPackage(requireContext().getPackageName())
-                        .putExtra(":settings:show_fragment_args", args));
-    }
-
     public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
             new BaseSearchIndexProvider(R.xml.audio_output_settings) {
                 @Override
@@ -517,7 +496,6 @@ public class AudioOutputSettings extends DashboardFragment {
                                     "audio_output_codec_help",
                                     "audio_output_format_note",
                                     "audio_output_aptx_preferences",
-                                    "audio_output_device_settings",
                                     "audio_output_capabilities",
                                     "audio_output_mixers",
                                     "audio_output_copy",

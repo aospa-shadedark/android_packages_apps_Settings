@@ -19,9 +19,6 @@
         <Preference android:key="audio_output_aptx_preferences"
             android:title="@string/bluetooth_aptx_preferences_title"
             android:summary="@string/bluetooth_aptx_preferences_summary" />
-        <Preference android:key="audio_output_device_settings"
-            android:title="@string/audio_output_device_settings"
-            android:summary="@string/audio_output_device_settings_summary" />
         <Preference android:key="audio_output_switch" android:title="@string/audio_output_switch"
             android:summary="@string/audio_output_switch_summary" />
         <Preference android:key="audio_output_balance" android:title="@string/audio_output_balance"
