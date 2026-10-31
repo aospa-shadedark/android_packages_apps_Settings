@@ -50,6 +50,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 
 import com.android.settings.R;
+import com.android.settings.bluetooth.BluetoothCodecPreference;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settingslib.bluetooth.A2dpProfile;
@@ -81,6 +82,7 @@ public class AudioOutputSettings extends DashboardFragment {
             };
     private AudioManager mAudioManager;
     private LocalBluetoothManager mBluetoothManager;
+    private BluetoothCodecPreference mCodecPreference;
     private String mReport = "";
 
     private final AudioManager.OnDevicesForAttributesChangedListener mRoutingListener =
@@ -138,6 +140,10 @@ public class AudioOutputSettings extends DashboardFragment {
         mAudioManager = requireContext().getSystemService(AudioManager.class);
         mBluetoothManager =
                 com.android.settings.bluetooth.Utils.getLocalBtManager(requireContext());
+        mCodecPreference = findPreference("audio_output_codec");
+        mCodecPreference.setTitle(R.string.audio_output_codec);
+        mCodecPreference.setDialogTitle(R.string.audio_output_codec);
+        mCodecPreference.configure(this::activeBluetoothDevice, this::a2dpProfile, true);
         PreferenceCategory capabilities = findPreference("audio_output_capabilities");
         PreferenceCategory mixers = findPreference("audio_output_mixers");
         capabilities.setInitialExpandedChildrenCount(0);
@@ -227,6 +233,7 @@ public class AudioOutputSettings extends DashboardFragment {
         capabilities.removeAll();
         mixers.removeAll();
         mixers.setVisible(false);
+        mCodecPreference.refresh(null, null);
         for (String key :
                 new String[] {
                     "audio_output_codec",
@@ -282,6 +289,7 @@ public class AudioOutputSettings extends DashboardFragment {
                     .setVisible(supportsAptx(status) && aptxPreferencesIntent() != null);
             BluetoothCodecConfig config = status == null ? null : status.getCodecConfig();
             if (a2dp) {
+                mCodecPreference.refresh(bluetoothDevice, status);
                 findPreference("audio_output_codec_help").setVisible(true);
                 String unknown = getString(R.string.audio_output_unreported);
                 setValue(
@@ -419,6 +427,21 @@ public class AudioOutputSettings extends DashboardFragment {
             Log.d(TAG, "Bluetooth format unavailable during service transition", e);
             return null;
         }
+    }
+
+    private A2dpProfile a2dpProfile() {
+        return mBluetoothManager == null
+                ? null
+                : mBluetoothManager.getProfileManager().getA2dpProfile();
+    }
+
+    private BluetoothDevice activeBluetoothDevice() {
+        // Resolve the default media route again whenever the chooser opens or submits.
+        List<AudioDeviceInfo> outputs = mAudioManager.getAudioDevicesForAttributes(MEDIA);
+        return outputs.size() == 1
+                        && outputs.get(0).getType() == AudioDeviceInfo.TYPE_BLUETOOTH_A2DP
+                ? bluetoothDevice(outputs.get(0))
+                : null;
     }
 
     private boolean supportsAptx(BluetoothCodecStatus status) {

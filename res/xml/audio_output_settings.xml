@@ -6,7 +6,8 @@
     </PreferenceCategory>
     <PreferenceCategory android:key="audio_output_format"
         android:title="@string/audio_output_reported">
-        <Preference android:key="audio_output_codec" android:title="@string/audio_output_codec" android:selectable="false" />
+        <com.android.settings.bluetooth.BluetoothCodecPreference
+            android:key="audio_output_codec" />
         <Preference android:key="audio_output_rate" android:title="@string/audio_output_rate" android:selectable="false" />
         <Preference android:key="audio_output_depth" android:title="@string/audio_output_depth" android:selectable="false" />
         <Preference android:key="audio_output_channels" android:title="@string/audio_output_channels" android:selectable="false" />
