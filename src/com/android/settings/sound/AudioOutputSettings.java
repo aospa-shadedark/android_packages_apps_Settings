@@ -247,6 +247,7 @@ public class AudioOutputSettings extends DashboardFragment {
         }
         findPreference("audio_output_codec_help").setVisible(false);
         findPreference("audio_output_aptx_preferences").setVisible(false);
+        findPreference("audio_output_bluetooth_options").setVisible(false);
         findPreference("audio_output_copy").setEnabled(!outputs.isEmpty());
         StringBuilder report =
                 new StringBuilder(getString(R.string.audio_output_title)).append('\n');
@@ -287,6 +288,7 @@ public class AudioOutputSettings extends DashboardFragment {
             BluetoothCodecStatus status = a2dp ? codecStatus(bluetoothDevice) : null;
             findPreference("audio_output_aptx_preferences")
                     .setVisible(supportsAptx(status) && aptxPreferencesIntent() != null);
+            findPreference("audio_output_bluetooth_options").setVisible(status != null);
             BluetoothCodecConfig config = status == null ? null : status.getCodecConfig();
             if (a2dp) {
                 mCodecPreference.refresh(bluetoothDevice, status);
@@ -519,6 +521,7 @@ public class AudioOutputSettings extends DashboardFragment {
                                     "audio_output_codec_help",
                                     "audio_output_format_note",
                                     "audio_output_aptx_preferences",
+                                    "audio_output_bluetooth_options",
                                     "audio_output_capabilities",
                                     "audio_output_mixers",
                                     "audio_output_copy",
